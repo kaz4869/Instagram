@@ -1,0 +1,64 @@
+<style>
+.undisplay-field {
+    display: none;
+}
+</style>
+<h3>投稿を検索</h3>
+<%= form_with url: posts_path, method: :get do |f| %>
+    <%= f.text_field :search %>
+    <%= f.submit '検索する' %>
+<% end %>
+<% @posts.each do |post| %>
+    <%= link_to user_path(post.user_id) do %>
+        <%= post.user.name %><br>
+    <% end %>
+    <%= post.body %><br>
+    <% if user_signed_in? %>
+        <% if current_user.already_post_liked?(post) %>
+            <%= post.post_likes.count %>
+            <%= link_to "いいねを取り消す", post_post_like_path(id:post.id, post_id:post.id, user_id:current_user.id), method: :delete %>
+        <% else %>
+            <%= post.post_likes.count %>
+            <%= link_to "いいね", post_post_likes_path(post_id:post.id), method: :create %>
+        <% end %>
+    <% else %>
+        <%= post.post_likes.count %>
+    <% end %><br>
+    <%= image_tag post.image_url, size: "200x200" if post.image? %><br>
+    <% post.comments.each do |comment| %>
+        <%= comment.body %>
+        <% if user_signed_in? %>
+            <% if current_user.already_comment_liked?(comment) %>
+                <%= comment.comment_likes.count %>
+                <%= link_to "いいねを取り消す", post_comment_comment_like_path(id:comment.id, post_id:post.id, comment_id:comment.id, user_id:current_user.id), method: :delete %>
+            <% else %>
+                <%= comment.comment_likes.count %>
+                <%= link_to "いいね", post_comment_comment_likes_path(post_id:post.id, comment_id:comment.id), method: :create %>
+            <% end %>
+        <% else %>
+            <%= comment.comment_likes.count %>
+        <% end %>
+        <% if user_signed_in? && comment.user_id == current_user.id  %>
+            <%= link_to "削除する", post_comment_path(post_id:post.id ,id:comment.id), method: :delete %>
+        <% end %>
+        <br>
+    <% end %>
+    <% @comment.post_id = post.id %>
+    <%= form_with(model: [post, @comment]) do |f| %>
+        <div class="field">
+            <%= f.label :コメント %>
+            <%= f.text_field :body, :size => 140 %>
+        </div>
+        <div class="undisplay-field">
+            <%= f.label :post_id %>
+            <%= f.text_field :post_id %>
+        </div>
+        <%= f.submit "投稿する" %>
+    <% end %>
+    <%= link_to "詳細ページへ", post_path(post.id) %><br>
+    <% if user_signed_in? && post.user_id == current_user.id %>
+        <%= link_to "編集する", edit_post_path(post.id) %><br>
+        <%= link_to "削除する", post_path(post.id), method: :delete %><br>
+    <% end %>
+    <br>
+<% end %>

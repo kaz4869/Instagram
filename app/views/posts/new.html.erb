@@ -1,0 +1,11 @@
+<%= form_with model: @post do |f| %>
+    <div class="field">
+        <%= f.label :コメント %>
+        <%= f.text_field :body, :size => 140 %>
+    </div>
+    <div class="field">
+        <%= f.label :画像 %>
+        <%= f.file_field :image %>
+    </div>
+    <%= f.submit "投稿する" %>
+<% end %>

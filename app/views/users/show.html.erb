@@ -1,0 +1,29 @@
+<%= @user.name %><br>
+<%= @user.email %><br>
+<%= image_tag @user.image_url, size: "300x300" if @user.image? %><br>
+<%= link_to "ユーザー情報の編集", edit_user_registration_path %>
+<% if current_user.following?(@user) %>
+    <%= link_to "フォロー外す", user_relationship_path(@user.id), method: :delete %>
+<% else %>
+    <%= link_to "フォローする", user_relationships_path(@user.id), method: :post %>
+<% end %><br>
+<% unless @user.id == current_user.id %>
+    <% if @isRoom == true %>
+        <p class="user-show-room"><a href="/rooms/<%= @roomId %>" class="btn btn-primary btn-lg">チャットへ</a>
+    <% else %>
+        <%= form_for @room do |f| %>
+            <%= fields_for @entry do |e| %>
+                <%= e.hidden_field :user_id, value: @user.id %>
+            <% end %>
+            <%= f.submit "チャットを始める", class:"btn btn-primary btn-lg user-show-chat"%>
+        <% end %>
+    <% end %>
+<% end %>
+<h5>フォロー</h5>
+<% @user.followings.each do |following| %>
+    <%= following.name %><br>
+<% end %>
+<h5>フォロワー</h5>
+<% @user.followers.each do |follower| %>
+    <%= follower.name %><br>
+<% end %>
