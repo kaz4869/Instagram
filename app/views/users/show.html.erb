@@ -1,6 +1,6 @@
 <%= @user.name %><br>
 <%= @user.email %><br>
-<%= image_tag @user.image_url, size: "300x300" if @user.image? %><br>
+<%= image_tag @user.image_url, size: "300x300", class:"rounded-circle" if @user.image? %><br>
 <%= link_to "ユーザー情報の編集", edit_user_registration_path %>
 <% if current_user.following?(@user) %>
     <%= link_to "フォロー外す", user_relationship_path(@user.id), method: :delete %>
