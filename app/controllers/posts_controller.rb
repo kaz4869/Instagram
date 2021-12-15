@@ -2,7 +2,7 @@ class PostsController < ApplicationController
     def index
         if params[:search] != nil && params[:search] != ""
             search = params[:search]
-            @posts = Post.joins(:user).where("body LIKE ? OR name LIKE ?", "%#{search}%}", "%#{search}%")
+            @posts = Post.joins(:user).where("body LIKE ? OR name LIKE ?", "%#{search}%", "%#{search}%")
         else
             @posts = Post.all
         end
@@ -41,6 +41,13 @@ class PostsController < ApplicationController
         post = Post.find(params[:id])
         post.destroy
         redirect_to :action => "index"
+    end
+    def test7
+        @posts = Post.all
+        @array = Array.new
+        @posts.each do |p|
+            @array[p.id] = { "key1" => p.body, "key2" => p.id }
+        end
     end
 
     private

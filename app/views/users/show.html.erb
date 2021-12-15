@@ -1,29 +1,124 @@
-<%= @user.name %><br>
-<%= @user.email %><br>
-<%= image_tag @user.image_url, size: "300x300", class:"rounded-circle" if @user.image? %><br>
-<%= link_to "ユーザー情報の編集", edit_user_registration_path %>
-<% if current_user.following?(@user) %>
-    <%= link_to "フォロー外す", user_relationship_path(@user.id), method: :delete %>
-<% else %>
-    <%= link_to "フォローする", user_relationships_path(@user.id), method: :post %>
-<% end %><br>
-<% unless @user.id == current_user.id %>
-    <% if @isRoom == true %>
-        <p class="user-show-room"><a href="/rooms/<%= @roomId %>" class="btn btn-primary btn-lg">チャットへ</a>
-    <% else %>
-        <%= form_for @room do |f| %>
-            <%= fields_for @entry do |e| %>
-                <%= e.hidden_field :user_id, value: @user.id %>
+<div class="container">
+    <div class="row">
+        <div class="col-2">
+            <%= @user.name %>
+        </div>
+        <div class="col-1">
+            <% if current_user.following?(@user) %>
+                <%= link_to user_relationship_path(@user.id), method: :delete do %>
+                    <i class="fas fa-handshake"></i>
+                <% end %>
+            <% else %>
+                <%= link_to user_relationships_path(@user.id), method: :post do %>
+                    <i class="far fa-handshake"></i>
+                <% end %>
             <% end %>
-            <%= f.submit "チャットを始める", class:"btn btn-primary btn-lg user-show-chat"%>
-        <% end %>
+        </div>
+        <div class="col-1">
+            <% unless @user.id == current_user.id %>
+                <% if @isRoom == true %>
+                    <p class="user-show-room"><a href="/rooms/<%= @roomId %>" class="icon"><i class="fas fa-comments"></i></a>
+                <% else %>
+                    <%= form_for @room do |f| %>
+                        <%= fields_for @entry do |e| %>
+                            <%= e.hidden_field :user_id, value: @user.id %>
+                        <% end %>
+                        <%= button_tag type: :submit, class:"icon" do %>
+                            <i class="far fa-comments"></i>
+                        <% end %> 
+                    <% end %>
+                <% end %>
+            <% end %>
+        </div>
+    </div>
+    <%= image_tag @user.image_url, size: "300x300", class:"rounded-circle" if @user.image? %><br>
+    <%= link_to "ユーザー情報の編集", edit_user_registration_path %>
+</div>
+<div class="container">
+    <h5>フォロー</h5>
+    <% @user.followings.each do |following| %>
+        <div class="row">
+            <div class="col-1">
+                <%= image_tag following.image_url, size: "50x50", class:"rounded-circle" if following.image? %>
+            </div>
+            <div class="col-2">
+                <%= link_to user_path(following.id) do %>
+                    <%= following.name %>
+                <% end %>
+            </div>
+            <div class="col-1">
+                <% if current_user.following?(following) %>
+                    <%= link_to user_relationship_path(following.id), method: :delete do %>
+                        <i class="fas fa-handshake"></i>
+                    <% end %>
+                <% else %>
+                    <%= link_to user_relationships_path(following.id), method: :post do %>
+                        <i class="far fa-handshake"></i>
+                    <% end %>
+                <% end %>
+            </div>
+            <div class="col-1">
+                <% if @following_array[following.id]["isRoom"] == "true" %>
+                    <p class="user-show-room"><a href="/rooms/<%= @following_array[following.id]["roomId"] %>" class="icon"><i class="fas fa-comments"></i></a><br>
+                <% elsif @following_array[following.id]["isRoom"] == "false" %>
+                    <%= form_for @room do |f| %>
+                        <%= fields_for @entry do |e| %>
+                            <%= e.hidden_field :user_id, value: following.id %>
+                        <% end %>
+                        <%= button_tag type: :submit, class:"icon" do %>
+                            <i class="far fa-comments"></i>
+                        <% end %> 
+                    <% end %>
+                <% end %>
+            </div>
+        </div>
     <% end %>
-<% end %>
-<h5>フォロー</h5>
-<% @user.followings.each do |following| %>
-    <%= following.name %><br>
-<% end %>
-<h5>フォロワー</h5>
-<% @user.followers.each do |follower| %>
-    <%= follower.name %><br>
-<% end %>
+</div>
+<div class="container">
+    <h5>フォロワー</h5>
+    <% @user.followers.each do |follower| %>
+        <div class="row">
+            <div class="col-1">
+                <%= image_tag follower.image_url, size: "50x50", class:"rounded-circle" if follower.image? %>
+            </div>
+            <div class="col-2">
+                <%= link_to user_path(follower.id) do %>
+                    <%= follower.name %>
+                <% end %>
+            </div>
+            <div class="col-1">
+                <% if current_user.following?(follower) %>
+                    <%= link_to user_relationship_path(follower.id), method: :delete do %>
+                        <i class="fas fa-handshake"></i>
+                    <% end %>
+                <% else %>
+                    <%= link_to user_relationships_path(follower.id), method: :post do %>
+                        <i class="far fa-handshake"></i>
+                    <% end %>
+                <% end %>
+            </div>
+            <div class="col-1">
+                <% if @follower_array[follower.id]["isRoom"] == "true" %>
+                    <p class="user-show-room"><a href="/rooms/<%= @follower_array[follower.id]["roomId"] %>" class="icon"><i class="fas fa-comments"></i></a><br>
+                <% elsif  @follower_array[follower.id]["isRoom"] == "false" %>
+                    <%= form_for @room do |f| %>
+                        <%= fields_for @entry do |e| %>
+                            <%= e.hidden_field :user_id, value: follower.id %>
+                        <% end %>
+                        <%= button_tag type: :submit, class:"icon" do %>
+                            <i class="far fa-comments"></i>
+                        <% end %> 
+                    <% end %>
+                <% end %>
+            </div>
+        </div>
+    <% end %>
+</div>
+
+<style>
+    .icon {
+        background-color: #fff;
+        border: none;
+        color: black;
+    }
+</style>

@@ -1,11 +1,22 @@
-<%= form_with model: @post do |f| %>
-    <div class="field">
-        <%= f.label :コメント %>
-        <%= f.text_field :body, :size => 140 %>
-    </div>
-    <div class="field">
-        <%= f.label :画像 %>
-        <%= f.file_field :image %>
-    </div>
-    <%= f.submit "投稿する" %>
-<% end %>
+<div class="new-main-container">
+    <%= form_with model: @post do |f| %>
+        <div class="new-body-field">
+            <%= f.label :コメント %>
+            <%= f.text_field :body, :size => 140, class:"new-bodyform-field" %>
+        </div>
+        <div class="field">
+            <%= f.label :画像 %>
+            <%= f.file_field :image %>
+        </div>
+        <%= f.submit "投稿する", class:"btn btn-primary" %>
+    <% end %>
+</div>
+<style>
+    .new-main-container {
+        width: 50%;
+        margin: 0px auto;
+    }
+    .new-bodyform-field {
+        width: 100%;
+    }
+</style>

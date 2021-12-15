@@ -1,14 +1,11 @@
 class PostLikesController < ApplicationController
     def create
-        postlike = PostLike.new
-        postlike.user_id = current_user.id
-        postlike.post_id = params[:post_id]
-        postlike.save
-        redirect_back(fallback_location: root_path)
-    end
-    def destroy
-        postlike = PostLike.find_by(post_id:params[:post_id], user_id:params[:user_id])
-        postlike.destroy
-        redirect_back(fallback_location: root_path)
-    end
+		@post = Post.find(params[:post_id])
+        post_like = current_user.post_likes.create(post_id: params[:post_id])
+	end
+	def destroy
+		@post = Post.find(params[:post_id])
+		post_like = PostLike.find_by(post_id: params[:post_id], user_id: current_user.id)
+		post_like.destroy
+	end
 end

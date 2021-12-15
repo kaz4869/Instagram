@@ -1,0 +1,41 @@
+<div class="container icons">
+<div class="row">
+    <% if user_signed_in? %>
+        <% if current_user.already_post_liked?(post) %>
+            <div class="col-3 icon-box">
+                <%= link_to post_post_like_path(id: post.id, post_id: post.id), method: :delete, remote: true do %>
+                    <i class="fas fa-thumbs-up"></i><%= post.post_likes.count %>
+                <% end %>
+            </div>
+        <% else %>
+            <div class="col-3 icon-box">
+                <%= link_to post_post_likes_path(id: post.id, post_id: post.id), method: :post, remote: true do %>
+                    <i class="far fa-thumbs-up"></i><%= post.post_likes.count %>
+                <% end %>
+            </div>
+        <% end %>
+    <% else %>
+        <div class="col-3 icon-box">
+            <i class="far fa-thumbs-up"></i><%= post.post_likes.count %>
+        </div>
+    <% end %>
+    
+    <div class="col-3 icon-box">
+        <%= link_to  post_path(post.id) do %>
+            <i class="fas fa-file-alt"></i>
+        <% end %>
+    </div>
+    <% if user_signed_in? && current_user.id == post.user_id %>
+        <div class="col-3 icon-box">
+            <%= link_to edit_post_path(post.id) do %>
+                <i class="fas fa-pen"></i>
+            <% end %>
+        </div>
+        <div class="col-3 icon-box">
+            <%= link_to post_path(post.id), method: :delete, data: { confirm: '削除しますか？' } do %>
+                <i class="fas fa-trash-alt"></i>
+            <% end %>
+        </div>
+    <% end %>
+</div>
+</div>

@@ -1,16 +1,33 @@
 <style>
 .undisplay-field {
     display: none;
+}  
+.icons {
+    width: 100%;
+}
+.icon-box {
+    display: flex;
+    justify-content: space-around;
+}
+.icon {
+    background-color: #fff;
+    border: none;
+    color: black;
+}
+.index-commentform-field {
+    width: 100%;
 }
 </style>
-<h3>投稿を検索</h3>
-<%= form_with url: posts_path, method: :get do |f| %>
-    <%= f.text_field :search %>
-    <%= f.submit '検索する' %>
-<% end %>
 
 
 <div class="container">
+    <div class="row">
+        <h3>投稿を検索する</h3>
+        <%= form_with url: posts_path, method: :get do |f| %>
+            <%= f.text_field :search %>
+            <%= f.submit '検索' %>
+        <% end %>
+    </div>
     <div class="row">
         <% @posts.each do |post| %>
             <div class="col-sm-3">
@@ -19,85 +36,40 @@
                     <div class="card-body">
                         <h5 class="card-title">
                             <%= link_to user_path(post.user_id) do %>
+                                <%= image_tag post.user.image_url, size: "50x50", class:"rounded-circle" if post.user.image? %>
                                 <%= post.user.name %><br>
                             <% end %>
                         </h5>
                         <p class="card-text">
                         <%= post.body %>
                         </p>
-                        <% if user_signed_in? %>
-                            <% if current_user.already_post_liked?(post) %>
-                                <%= post.post_likes.count %>
-                                <%= link_to "いいねを取り消す", post_post_like_path(id:post.id, post_id:post.id, user_id:current_user.id), method: :delete %>
-                            <% else %>
-                                <%= post.post_likes.count %>
-                                <%= link_to "いいね", post_post_likes_path(post_id:post.id), method: :create %>
-                            <% end %>
-                        <% else %>
-                            <%= post.post_likes.count %>
-                        <% end %><br>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>
+                        <div id="post_likes_buttons_<%= post.id %>">
+                            <%= render partial: 'post_likes/like', locals: { post: post } %>
+                        </div>
                         <% @comment.post_id = post.id %>
-                        <%= form_with(model: [post, @comment]) do |f| %>
-                            <div class="field">
-                                <%= f.label :コメント %>
-                                <%= f.text_field :body %>
-                            </div>
-                            <div class="undisplay-field">
-                                <%= f.label :post_id %>
-                                <%= f.text_field :post_id %>
-                            </div>
-                            <%= f.submit "投稿する" %>
-                        <% end %>
-                        <%= link_to "詳細ページへ", post_path(post.id), class:"btn btn-primary" %><br>
-                        <% if user_signed_in? && post.user_id == current_user.id %>
-                            <%= link_to "編集する", edit_post_path(post.id), class:"btn btn-primary"  %><br>
-                            <%= link_to "削除する", post_path(post.id), method: :delete, class:"btn btn-primary"  %><br>
-                        <% end %>
-                        <br>
+                        <div class="container">
+                            <%= form_with(model: [post, @comment]) do |f| %>
+                                <div class="row">
+                                    <div class="col-9">
+                                        <div class="index-comment-field">
+                                            <%= f.text_field :body, :placeholder => "コメント", class:"index-commentform-field" %>
+                                        </div>
+                                    </div>
+                                    <div class="undisplay-field">
+                                        <%= f.label :post_id %>
+                                        <%= f.text_field :post_id %>
+                                    </div>
+                                    <div class="col-1">
+                                        <%= button_tag type: :submit, class:"icon" do %>
+                                            <i class="far fa-comment"></i>
+                                        <% end %> 
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
                     </div>
                 </div>
             </div>
         <% end %>
     </div>
 </div>
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">Recipient:</label>
-                    <input type="text" class="form-control" id="recipient-name">
-                </div>
-                <div class="form-group">
-                    <label for="message-text" class="col-form-label">Message:</label>
-                    <textarea class="form-control" id="message-text"></textarea>
-                </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Send message</button>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-$('#exampleModal').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget) // Button that triggered the modal
-  var recipient = button.data('whatever') // Extract info from data-* attributes
-  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-  var modal = $(this)
-  modal.find('.modal-title').text('New message to ' + recipient)
-  modal.find('.modal-body input').val(recipient)
-})
-</script>

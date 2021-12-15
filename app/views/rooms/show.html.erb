@@ -1,29 +1,51 @@
-<h1>DM</h1>
+<div class="container">
+    <h1>DM</h1>
 
-<h4>参加者</h4>
-<% @entries.each do |e| %>
-    <%= link_to user_path(e.user_id) do %>
-        <%= e.user.name %><br>
-    <% end %>
-<% end %>
-
-<hr>
-<% if @messages.present? %>
-    <% @messages.each do |m| %>
-        <strong><%= m.content %></strong>
-        by
-        <%= link_to user_path(m.user_id) do %>
-            <%= m.user.name %><br>
+    <h4>参加者</h4>
+    <% @entries.each do |e| %>
+        <%= link_to user_path(e.user_id) do %>
+            <%= image_tag e.user.image_url, size: "50x50", class:"rounded-circle" if e.user.image? %>
+            <%= e.user.name %><br>
         <% end %>
-        <hr>
     <% end %>
-<% else %>
-    <h3 class="text-center">メッセージはまだありません</h3>
-<% end %>
 
-<%= form_for @message do |f| %>
-    <%= f.text_field :content, :placeholder => "メッセージを入力して下さい" , :size => 70 %>
-    <%= f.hidden_field :room_id, :value => @room.id %>
-    <br>
-    <%= f.submit "投稿する" %>
-<% end %>
+    <hr>
+    <% if @messages.present? %>
+        <% @messages.each do |m| %>
+            <div class="row">
+                <div class="col-1">
+                    <%= image_tag m.user.image_url, size: "50x50", class:"rounded-circle" if m.user.image? %>
+                </div>
+                <div class="col-11">
+                    <strong><%= m.content %></strong>
+                </div>
+            </div>
+        <% end %>
+    <% else %>
+        <h3 class="text-center">メッセージはまだありません</h3>
+    <% end %>
+
+    <%= form_for @message do |f| %>
+    <div class="row">
+        <div class="col-11">
+            <%= f.text_field :content, :placeholder => "メッセージを入力して下さい" , :size => 70, class:"DM-comment-form-field" %>
+            <%= f.hidden_field :room_id, :value => @room.id %>
+        </div>
+        <div class="col-1">
+            <%= button_tag type: :submit, class:"icon" do %>
+                <i class="far fa-comment"></i>
+            <% end %> 
+        </div>
+    <% end %>
+</div>
+
+<style>
+    .DM-comment-form-field {
+        width: 100%;
+    }
+    .icon {
+        background-color: #fff;
+        border: none;
+        color: black;
+    }
+</style>

@@ -1,26 +1,49 @@
-<h2>Log in</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+<div class=bird>
+    <div class="beak1">
+        <div class="beak1-element1"></div>
+        <div class="beak1-element2"></div>
     </div>
-  <% end %>
+    <div class="beak2">
+        <div class="beak2-element1"></div>
+        <div class="beak2-element2"></div>
+    </div>
+    <div class="body">
+        <div class="body-element1"></div>
+        <div class="body-element2"></div>
+    </div>
+    <div class="head">
+        <div class="head-element"></div>
+    </div>
+    <div class="wing1">
+        <div class="wing1-element1"></div>
+        <div class="wing1-element2"></div>
+    </div>
+    <div class="wing2">
+        <div class="wing2-element1"></div>
+        <div class="wing2-element2"></div>
+    </div>
+    <div class="wing3">
+        <div class="wing3-element1"></div>
+        <div class="wing3-element2"></div>
+    </div>
+</div>
+<div class="title">
+    <h4>twitterにログイン</h4>
+</div>
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <div class="field">
+        <label class="userform-label">電話、メールまたはユーザー名</label>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", size: 40, class:"form-field" %>
+    </div>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
+    <div class="field">
+        <label class="userform-label">パスワード</label>
+        <%= f.password_field :password, autocomplete: "current-password", size: 40, class:"form-field" %>
+    </div>
+
+    <div class="actions">
+        <%= f.submit "ログイン", class:"submit" %>
+    </div>
 <% end %>
 
 <%= render "users/shared/links" %>

@@ -2,50 +2,99 @@
 .undisplay-field {
     display: none;
 }
+.main-container {
+    margin: 0px auto;
+    width: 80%;
+}
+.icons {
+    width: 100%;
+}
+.icon-box {
+    display: flex;
+    justify-content: space-around;
+}
+.icon {
+    background-color: #fff;
+    border: none;
+    color: black;
+}
+.main {
+    width: 50%;
+}
+.comment-container {
+    border-bottom: 1px solid;
+}
+.name-box {
+    display: flex;
+    align-items: center;
+}
 </style>
-<%= link_to user_path(@post.user_id) do %>
-    <%= @post.user.name %><br>
-<% end %>
+<div class="main container">
+    <div class="row">
+        <div class="col-1">
+            <%= image_tag @post.user.image_url, size: "50x50", class:"rounded-circle" if @post.user.image? %>
+        </div>
+        <div class="col-11 name-box">
+            <%= link_to user_path(@post.user_id) do %>
+                <%= @post.user.name %><br>
+            <% end %>
+        </div>
+    </div>
 
-<%= @post.body %><br>
-<% if user_signed_in? %>
-    <% if current_user.already_post_liked?(@post) %>
-        <%= @post.post_likes.count %>
-        <%= link_to "いいねを取り消す", post_post_like_path(id:@post.id, post_id:@post.id, user_id:current_user.id), method: :delete %>
-    <% else %>
-        <%= @post.post_likes.count %>
-        <%= link_to "いいね", post_post_likes_path(post_id:@post.id), method: :create %>
-    <% end %>
-<% else %>
-    <%= @post.post_likes.count %>
-<% end %><br>
-<%= image_tag @post.image_url, size: "500x500" if @post.image? %><br>
-<% @post.comments.each do |comment| %>
-    <%= comment.body %>
-    <% if user_signed_in? %>
-        <% if current_user.already_comment_liked?(comment) %>
-            <%= comment.comment_likes.count %>
-            <%= link_to "いいねを取り消す", post_comment_comment_like_path(id:comment.id, post_id:@post.id, comment_id:comment.id, user_id:current_user.id), method: :delete %>
-        <% else %>
-            <%= comment.comment_likes.count %>
-            <%= link_to "いいね", post_comment_comment_likes_path(post_id:@post.id, comment_id:comment.id), method: :create %>
-        <% end %>
-    <% else %>
-        <%= comment.comment_likes.count %>
-    <% end %>
-    <% if user_signed_in? && comment.user_id == current_user.id  %>
-        <%= link_to "削除する", post_comment_path(post_id:@post.id ,id:comment.id), method: :delete %>
-    <% end %>
-    <br>
-<% end %>
-<%= form_with(model: [@post, @comment]) do |f| %>
-    <div class="field">
-        <%= f.label :コメント %>
-        <%= f.text_field :body, :size => 140 %>
+    <div class="row">
+        <div class="col-12">
+            <%= @post.body %>
+        </div>
     </div>
-    <div class="undisplay-field">
-        <%= f.label :post_id %>
-        <%= f.text_field :post_id %>
+    <div class="row">
+        <div class="col-12">
+            <div id="post_likes_buttons_<%= @post.id %>">
+                <%= render partial: 'post_likes/like', locals: { post: @post } %>
+            </div>
+        </div>
     </div>
-    <%= f.submit "投稿する" %>
-<% end %>
+    <div class="row">
+        <div class="col-12">
+            <%= image_tag @post.image_url, size: "500x500" if @post.image? %>
+        </div>
+    </div>
+    <% @post.comments.each do |comment| %>
+        <div class="row comment-container">
+            <div class="col-1">
+                <%= image_tag comment.user.image_url, size: "50x50", class:"rounded-circle" if comment.user.image? %>
+            </div>
+            <div class="col-5">
+                <%= comment.user.name %><br>
+                <%= comment.body %>
+            </div>
+            <div class="col-3">
+                <div id="comment_likes_buttons_<%= comment.id %>">
+                    <%= render partial: 'comment_likes/like', locals: { comment: comment, post: @post } %>
+                </div>
+            </div>
+        </div>
+    <% end %>
+    <%= form_with(model: [@post, @comment]) do |f| %>
+        <div class="row">
+            <div class="col-11">
+                <div class="post-comment-field">
+                    <%= f.text_field :body, :placeholder => "コメントを入力して下さい", :size => 140, class:"post-commentform-field" %>
+                </div>
+            </div>
+            <div class="undisplay-field">
+                <%= f.text_field :post_id %>
+            </div>
+            <div class="col-1">
+                <%= button_tag type: :submit, class:"icon" do %>
+                    <i class="far fa-comment"></i>
+                <% end %>
+            </div>
+        </div>
+    <% end %>
+</div>
+
+<style>
+    .post-commentform-field {
+        width: 100%;
+    }
+</style>
