@@ -4,15 +4,9 @@
             <%= @user.name %>
         </div>
         <div class="col-1">
-            <% if current_user.following?(@user) %>
-                <%= link_to user_relationship_path(@user.id), method: :delete do %>
-                    <i class="fas fa-handshake"></i>
-                <% end %>
-            <% else %>
-                <%= link_to user_relationships_path(@user.id), method: :post do %>
-                    <i class="far fa-handshake"></i>
-                <% end %>
-            <% end %>
+            <div id="relationships_buttons_<%= @user.id %>">
+                <%= render partial: 'relationships/follow', locals: { user: @user } %>
+            </div>
         </div>
         <div class="col-1">
             <% unless @user.id == current_user.id %>
@@ -47,15 +41,9 @@
                 <% end %>
             </div>
             <div class="col-1">
-                <% if current_user.following?(following) %>
-                    <%= link_to user_relationship_path(following.id), method: :delete do %>
-                        <i class="fas fa-handshake"></i>
-                    <% end %>
-                <% else %>
-                    <%= link_to user_relationships_path(following.id), method: :post do %>
-                        <i class="far fa-handshake"></i>
-                    <% end %>
-                <% end %>
+                <div id="relationships_buttons_<%= following.id %>">
+                    <%= render partial: 'relationships/follow', locals: { user: following } %>
+                </div>
             </div>
             <div class="col-1">
                 <% if @following_array[following.id]["isRoom"] == "true" %>
@@ -87,15 +75,9 @@
                 <% end %>
             </div>
             <div class="col-1">
-                <% if current_user.following?(follower) %>
-                    <%= link_to user_relationship_path(follower.id), method: :delete do %>
-                        <i class="fas fa-handshake"></i>
-                    <% end %>
-                <% else %>
-                    <%= link_to user_relationships_path(follower.id), method: :post do %>
-                        <i class="far fa-handshake"></i>
-                    <% end %>
-                <% end %>
+                <div id="relationships_buttons_<%= follower.id %>">
+                    <%= render partial: 'relationships/follow', locals: { user: follower } %>
+                </div>
             </div>
             <div class="col-1">
                 <% if @follower_array[follower.id]["isRoom"] == "true" %>

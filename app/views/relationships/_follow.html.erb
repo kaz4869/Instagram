@@ -1,0 +1,9 @@
+<% if current_user.following?(user) %>
+    <%= link_to user_relationship_path(id:user.id, user_id:user.id), method: :delete, remote: true do %>
+        <i class="fas fa-handshake"></i>
+    <% end %>
+<% else %>
+    <%= link_to user_relationships_path(id:user.id, user_id:user.id), method: :post, remote: true do %>
+        <i class="far fa-handshake"></i>
+    <% end %>
+<% end %>
