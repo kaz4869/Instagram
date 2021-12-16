@@ -1,31 +1,14 @@
-<div class="icons container">
-<div class="row">
-    <% if user_signed_in? %>
-        <% if current_user.already_comment_liked?(comment) %>
-            <div class="col-6 icon-box">
-                <%= link_to post_comment_comment_like_path(id:comment.id, post_id:post.id, comment_id:comment.id), method: :delete, remote: true do %>
-                    <i class="fas fa-thumbs-up"></i><%= comment.comment_likes.count %>
-                <% end %>
-            </div>
-        <% else %>
-            <div class="col-6 icon-box">
-                <%= link_to post_comment_comment_likes_path(post_id:post.id, comment_id:comment.id), method: :post, remote: true do %>
-                    <i class="far fa-thumbs-up"></i><%= comment.comment_likes.count %>
-                <% end %>
-            </div>
+<% if user_signed_in? %>
+    <% if current_user.already_comment_liked?(comment) %>
+        <%= link_to post_comment_comment_like_path(id:comment.id, post_id:post.id, comment_id:comment.id), method: :delete, remote: true do %>
+            <i class="fas fa-thumbs-up"></i><%= comment.comment_likes.count %>
         <% end %>
     <% else %>
-        <div class="col-6 icon-box">
+        <%= link_to post_comment_comment_likes_path(post_id:post.id, comment_id:comment.id), method: :post, remote: true do %>
             <i class="far fa-thumbs-up"></i><%= comment.comment_likes.count %>
-        </div>
+        <% end %>
     <% end %>
+<% else %>
+    <i class="far fa-thumbs-up"></i><%= comment.comment_likes.count %>
+<% end %>
     
-    <% if user_signed_in? && current_user.id == comment.user_id %>
-        <div class="col-6 icon-box">
-            <%= link_to post_comment_path(post_id:post.id ,id:comment.id), method: :delete, data: { confirm: '削除しますか？' } do %>
-                <i class="fas fa-trash-alt"></i>
-            <% end %>
-        </div>
-    <% end %>
-</div>
-</div>

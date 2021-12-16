@@ -48,8 +48,31 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <div id="post_likes_buttons_<%= @post.id %>">
-                <%= render partial: 'post_likes/like', locals: { post: @post } %>
+            <div class="icons container">
+                <div class="row">
+                    <div class="col-3 icon-box">
+                        <div id="post_likes_buttons_<%= @post.id %>">
+                            <%= render partial: 'post_likes/like', locals: { post: @post } %>
+                        </div>
+                    </div>
+                    <div class="col-3 icon-box">
+                        <%= link_to  post_path(@post.id) do %>
+                            <i class="fas fa-file-alt"></i>
+                        <% end %>
+                    </div>
+                    <% if user_signed_in? && current_user.id == @post.user_id %>
+                        <div class="col-3 icon-box">
+                            <%= link_to edit_post_path(@post.id) do %>
+                                <i class="fas fa-pen"></i>
+                            <% end %>
+                        </div>
+                        <div class="col-3 icon-box">
+                            <%= link_to post_path(@post.id), method: :delete, data: { confirm: '削除しますか？' } do %>
+                                <i class="fas fa-trash-alt"></i>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
             </div>
         </div>
     </div>
@@ -68,8 +91,21 @@
                 <%= comment.body %>
             </div>
             <div class="col-3">
-                <div id="comment_likes_buttons_<%= comment.id %>">
-                    <%= render partial: 'comment_likes/like', locals: { comment: comment, post: @post } %>
+                <div class="icons container">
+                    <div class="row">
+                        <div class="col-6 icon-box">
+                            <div id="comment_likes_buttons_<%= comment.id %>">
+                                <%= render partial: 'comment_likes/like', locals: { comment: comment, post: @post } %>
+                            </div>
+                        </div>
+                        <div class="col-6 icon-box">
+                            <% if user_signed_in? && current_user.id == comment.user_id %>
+                                <%= link_to post_comment_path(post_id:@post.id ,id:comment.id), method: :delete, data: { confirm: '削除しますか？' } do %>
+                                    <i class="fas fa-trash-alt"></i>
+                                <% end %>
+                            <% end %>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
