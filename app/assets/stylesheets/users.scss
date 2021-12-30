@@ -214,6 +214,11 @@
     position: absolute;
     font-size: 10px;
     color: #A9A9A9;
+    left: 0px;
+}
+.form-field:focus + label {
+    font-size: 10px;
+    color: rgb(9, 144, 255);
 }
 .form-field {
     height: 45px;
@@ -221,10 +226,15 @@
     border-bottom: 1px solid black;
     background-color: #f2f7f8;
 }
+.form-field:focus {
+    outline: none;
+    border-bottom: 1px solid rgb(9, 144, 255);
+}
 .file-label {
     font-size: 10px;
     color: #A9A9A9;
 }
+
 .actions {
     margin-top: 15px;
     text-align: center;

@@ -111,22 +111,22 @@
         </div>
     <% end %>
     <%= form_with(model: [@post, @comment]) do |f| %>
-        <div class="row">
-            <div class="col-11">
-                <div class="post-comment-field">
-                    <%= f.text_field :body, :placeholder => "コメントを入力して下さい", :size => 140, class:"post-commentform-field" %>
-                </div>
-            </div>
-            <div class="undisplay-field">
-                <%= f.text_field :post_id %>
-            </div>
-            <div class="col-1">
-                <%= button_tag type: :submit, class:"icon" do %>
-                    <i class="far fa-comment"></i>
-                <% end %>
+    <div class="row">
+        <div class="col-11">
+            <div class="post-comment-field">
+                <%= f.text_field :body, :placeholder => "コメントを入力して下さい", :size => 140, class:"post-commentform-field" %>
             </div>
         </div>
-    <% end %>
+        <div class="undisplay-field">
+            <%= f.text_field :post_id %>
+        </div>
+        <div class="col-1">
+            <%= button_tag type: :submit, class:"icon" do %>
+                <i class="far fa-comment"></i>
+            <% end %>
+        </div>
+    </div>
+<% end %>
 </div>
 
 <style>

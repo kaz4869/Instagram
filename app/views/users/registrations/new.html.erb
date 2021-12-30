@@ -32,23 +32,23 @@
   <%= render "users/shared/error_messages", resource: resource %>
 
   <div class="field">
-    <label class="userform-label">ユーザー名</label>
     <%= f.text_field :name, autofocus: true, size: 40, class:"form-field" %>
+    <label class="userform-label">ユーザー名</label>
   </div>
 
   <div class="field">
-    <label class="userform-label">メールアドレス</label>
     <%= f.email_field :email, autofocus: true, autocomplete: "email", size: 40, class:"form-field" %>
+    <label class="userform-label">メールアドレス</label>
   </div>
 
   <div class="field">
-    <label class="userform-label">パスワード</label>
     <%= f.password_field :password, autocomplete: "new-password", size: 40, class:"form-field" %>
+    <label class="userform-label">パスワード</label>
   </div>
 
   <div class="field">
-    <label class="userform-label">パスワードの再入力</label>
     <%= f.password_field :password_confirmation, autocomplete: "new-password", size: 40, class:"form-field" %>
+    <label class="userform-label">パスワードの再入力</label>
   </div>
 
   <div class="actions">

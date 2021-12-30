@@ -28,17 +28,17 @@
     </div>
 </div>
 <div class="title">
-    <h4>twitterにログイン</h4>
+    <h4>Twitterにログイン</h4>
 </div>
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="field">
+        <%= f.email_field :email, size: 40, class:"form-field" %>
         <label class="userform-label">電話、メールまたはユーザー名</label>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", size: 40, class:"form-field" %>
     </div>
 
     <div class="field">
+        <%= f.password_field :password, size: 40, class:"form-field" %>
         <label class="userform-label">パスワード</label>
-        <%= f.password_field :password, autocomplete: "current-password", size: 40, class:"form-field" %>
     </div>
 
     <div class="actions">

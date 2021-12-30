@@ -45,8 +45,10 @@ class PostsController < ApplicationController
     def test7
         @posts = Post.all
         @array = Array.new
+        @array2 = Array.new
         @posts.each do |p|
             @array[p.id] = { "key1" => p.body, "key2" => p.id }
+            @array2.push({ "key1" => p.body, "key2" => p.id })
         end
     end
 
