@@ -32,17 +32,17 @@
   <%= render "users/shared/error_messages", resource: resource %>
 
   <div class="field">
-    <%= f.text_field :name, autofocus: true, size: 40, class:"form-field" %>
+    <%= f.text_field :name, autocomplete:"off", autofocus: true, size: 40, class:"form-field" %>
     <label class="userform-label">ユーザー名</label>
   </div>
 
   <div class="field">
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", size: 40, class:"form-field" %>
+    <%= f.email_field :email, autocomplete:"off", autofocus: true, size: 40, class:"form-field" %>
     <label class="userform-label">メールアドレス</label>
   </div>
 
   <div class="field">
-    <%= f.password_field :password, autocomplete: "new-password", size: 40, class:"form-field" %>
+    <%= f.password_field :password, autocomplete:"off", autocomplete: "new-password", size: 40, class:"form-field" %>
     <label class="userform-label">パスワード</label>
   </div>
 

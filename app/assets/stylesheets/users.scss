@@ -209,26 +209,31 @@
     width: 350px;
     margin: 15px auto;
     position: relative;
+    height: 45px;
+    background-color: #f2f7f8;
 }
 .userform-label {
     position: absolute;
+    top: 3px;
+    left: 3px;
     font-size: 10px;
     color: #A9A9A9;
-    left: 0px;
 }
 .form-field:focus + label {
     font-size: 10px;
-    color: rgb(9, 144, 255);
+    color: rgb(25, 165, 247);
 }
 .form-field {
-    height: 45px;
+    height: 35px;
+    position:absolute;
+    top: 10px;
     border: none;
     border-bottom: 1px solid black;
     background-color: #f2f7f8;
 }
 .form-field:focus {
     outline: none;
-    border-bottom: 1px solid rgb(9, 144, 255);
+    border-bottom: 1px solid rgb(25, 165, 247);
 }
 .file-label {
     font-size: 10px;
