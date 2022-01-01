@@ -212,18 +212,13 @@
     height: 45px;
     background-color: #f2f7f8;
 }
-.userform-label {
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    font-size: 10px;
-    color: #A9A9A9;
-}
-.form-field:focus + label {
-    font-size: 10px;
-    color: rgb(25, 165, 247);
-}
-.form-field {
+
+//通常時の処理
+#name-field,
+#email-field,
+#password-field,
+#password-confirmation-field,
+#new-password-field {
     height: 35px;
     position:absolute;
     top: 10px;
@@ -231,15 +226,67 @@
     border-bottom: 1px solid black;
     background-color: #f2f7f8;
 }
-.form-field:focus {
+#name-field + label,
+#email-field + label,
+#password-field + label,
+#password-confirmation-field + label,
+#new-password-field + label {
+    position: absolute;
+    top: 12px;
+    left: 5px;
+    font-size: 15px;
+    color: #A9A9A9;
+    pointer-events: none;
+    transition: 0.3s;
+}
+//フォームにfocusが当たっている時の処理
+#name-field.active,
+#email-field.active,
+#password-field.active,
+#password-confirmation-field.active,
+#new-password-field.active {
     outline: none;
     border-bottom: 1px solid rgb(25, 165, 247);
 }
-.file-label {
+#name-field.active + label,
+#email-field.active + label,
+#password-field.active + label,
+#password-confirmation-field.active + label,
+#new-password-field.active + label {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    font-size: 10px;
+    color: rgb(25, 165, 247);
+}
+//フォームに値が入っている時の処理
+#name-field.filled,
+#email-field.filled,
+#password-field.filled,
+#password-confirmation-field.filled,
+#new-password-field.filled {
+    outline: none;
+    border-bottom: 1px solid black;
+}
+#name-field.filled + label,
+#email-field.filled + label,
+#password-field.filled +label,
+#password-confirmation-field.filled + label,
+#new-password-field.filled + label {
+    position: absolute;
+    top: 3px;
+    left: 3px;
     font-size: 10px;
     color: #A9A9A9;
 }
 
+
+
+
+.file-label {
+    font-size: 10px;
+    color: #A9A9A9;
+}
 .actions {
     margin-top: 15px;
     text-align: center;

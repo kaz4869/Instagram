@@ -31,24 +31,26 @@
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= render "users/shared/error_messages", resource: resource %>
 
+  
+
   <div class="field">
-    <%= f.text_field :name, autocomplete:"off", autofocus: true, size: 40, class:"form-field" %>
-    <label class="userform-label">ユーザー名</label>
+    <%= f.email_field :email, autocomplete:"off", autofocus: true, size: 40, id:"email-field" %>
+    <label>メールアドレス</label>
   </div>
 
   <div class="field">
-    <%= f.email_field :email, autocomplete:"off", autofocus: true, size: 40, class:"form-field" %>
-    <label class="userform-label">メールアドレス</label>
+    <%= f.text_field :name, autocomplete:"off", autofocus: true, size: 40, id:"name-field" %>
+    <label>ユーザー名</label>
   </div>
 
   <div class="field">
-    <%= f.password_field :password, autocomplete:"off", autocomplete: "new-password", size: 40, class:"form-field" %>
-    <label class="userform-label">パスワード</label>
+    <%= f.password_field :password, autocomplete:"off", size: 40, id:"password-field" %>
+    <label>パスワード</label>
   </div>
 
   <div class="field">
-    <%= f.password_field :password_confirmation, autocomplete: "new-password", size: 40, class:"form-field" %>
-    <label class="userform-label">パスワードの再入力</label>
+    <%= f.password_field :password_confirmation, autocomplete: "off", size: 40, id:"password-confirmation-field" %>
+    <label>パスワードの再入力</label>
   </div>
 
   <div class="actions">
@@ -57,3 +59,33 @@
 <% end %>
 
 <%= render "users/shared/links" %>
+
+<script>
+var username = document.querySelector('#name-field');
+var email = document.querySelector('#email-field');
+var password = document.querySelector('#password-field');
+var passwordConfirmation = document.querySelector('#password-confirmation-field');
+var nameField  = document.getElementById("name-field");
+var emailField  = document.getElementById("email-field");
+var passField  = document.getElementById("password-field");
+var passConfirmField  = document.getElementById("password-confirmation-field");
+
+function myFunction(form, body) {
+    form.focusin = function (){
+        form.className = "active";
+    }; 
+    form.focusout = function (){
+        if (body.value == "" || body.value == undefined) {
+            form.className = "";
+        } else {
+            form.className = "filled"
+        }
+    }; 
+}
+
+myFunction(nameField, username);
+myFunction(emailField, email);
+myFunction(passField, password);
+myFunction(passConfirmField, passwordConfirmation);
+
+</script>

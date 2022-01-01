@@ -32,13 +32,13 @@
 </div>
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="field">
-        <%= f.email_field :email, autocomplete:"off", size: 40, class:"form-field" %>
-        <label class="userform-label">電話、メールまたはユーザー名</label>
+        <%= f.email_field :email, autocomplete:"off", size: 40, id:"email-field" %>
+        <label>メールアドレス</label>
     </div>
 
     <div class="field">
-        <%= f.password_field :password, size: 40, class:"form-field" %>
-        <label class="userform-label">パスワード</label>
+        <%= f.password_field :password, size: 40, id:"password-field" %>
+        <label>パスワード</label>
     </div>
 
     <div class="actions">
@@ -47,3 +47,27 @@
 <% end %>
 
 <%= render "users/shared/links" %>
+
+<script>
+var email = document.querySelector('#email-field');
+var password = document.querySelector('#password-field');
+var emailField  = document.getElementById("email-field");
+var passField  = document.getElementById("password-field");
+
+function myFunction(form, body) {
+    form.focusin = function (){
+        form.className = "active";
+    }; 
+    form.focusout = function (){
+        if (body.value == "") {
+            form.className = "";
+        } else {
+            form.className = "filled"
+        }
+    }; 
+}
+
+myFunction(emailField, email);
+myFunction(passField, password);
+
+</script>

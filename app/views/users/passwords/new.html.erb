@@ -32,8 +32,8 @@
   <%= render "users/shared/error_messages", resource: resource %>
 
   <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", size: 40, class:"form-field" %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "off", size: 40, id:"email-field" %>
+    <label>メールアドレス</label>
   </div>
 
   <div class="actions">
@@ -42,3 +42,24 @@
 <% end %>
 
 <%= render "users/shared/links" %>
+
+<script>
+var email = document.querySelector('#email-field');
+var emailField  = document.getElementById("email-field");
+
+function myFunction(form, body) {
+    form.focusin = function (){
+        form.className = "active";
+    }; 
+    form.focusout = function (){
+        if (body.value == "") {
+            form.className = "";
+        } else {
+            form.className = "filled"
+        }
+    }; 
+}
+
+myFunction(emailField, email);
+
+</script>

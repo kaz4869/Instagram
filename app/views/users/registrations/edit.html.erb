@@ -32,13 +32,13 @@
   <%= render "users/shared/error_messages", resource: resource %>
 
   <div class="field">
-    <%= f.text_field :name, autofocus: true, size: 40, class:"form-field" %>
-    <label class="userform-label">ユーザー名</label>
+    <%= f.text_field :name, autocomplete:"off", autofocus: true, size: 40, id:"name-field" %>
+    <label>ユーザー名</label>
   </div>
 
   <div class="field">
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", size: 40, class:"form-field" %>
-    <label class="userform-label">メールアドレス</label>
+    <%= f.email_field :email, autocomplete:"off", autofocus: true, autocomplete: "email", size: 40, id:"email-field" %>
+    <label>メールアドレス</label>
   </div>
 
   <div class="field">
@@ -51,21 +51,21 @@
   <% end %>
 
   <div class="field">
-    <%= f.password_field :password, autocomplete: "new-password", size: 40, class:"form-field" %>
-    <label class="userform-label">新しいパスワード</label>
+    <%= f.password_field :password, autocomplete: "off", size: 40, id:"new-password-field" %>
+    <label>新しいパスワード</label>
     <% if @minimum_password_length %>
       <br />
     <% end %>
   </div>
 
   <div class="field">
-    <%= f.password_field :password_confirmation, autocomplete: "new-password", size: 40, class:"form-field" %>
-    <label class="userform-label">新しいパスワードの再入力</label>
+    <%= f.password_field :password_confirmation, autocomplete: "off", size: 40, id:"password-confirmation-field" %>
+    <label>新しいパスワードの再入力</label>
   </div>
 
   <div class="field">
-    <%= f.password_field :current_password, autocomplete: "current-password", size: 40, class:"form-field" %>
-    <label class="userform-label">現在のパスワード</label>
+    <%= f.password_field :current_password, autocomplete: "off", size: 40, id:"password-field" %>
+    <label>現在のパスワード</label>
   </div>
 
   <div class="actions">
@@ -76,3 +76,47 @@
 <%= button_to "アカウントを削除する", registration_path(resource_name), data: { confirm: "本当に削除しますか?" }, method: :delete, class:"btn btn-primary" %>
 
 <%= link_to "Back", :back, class:"btn btn-primary" %>
+
+<script>
+var username = document.querySelector('#name-field');
+var email = document.querySelector('#email-field');
+var newPassword = document.querySelector('#new-password-field');
+var passwordConfirmation = document.querySelector('#password-confirmation-field');
+var password = document.querySelector('#password-field');
+var nameField  = document.getElementById("name-field");
+var emailField  = document.getElementById("email-field");
+var newPassField  = document.getElementById("new-password-field");
+var passConfirmField  = document.getElementById("password-confirmation-field");
+var passField  = document.getElementById("password-field");
+
+function myFunction(form, body) {
+    form.focusin = function (){
+        form.className = "active";
+    }; 
+    form.focusout = function (){
+        if (body.value == "" || body.value == undefined) {
+            form.className = "";
+        } else {
+            form.className = "filled";
+        }
+    }; 
+}
+
+function myFunction2(form, body) {
+  if (body.value == "") {
+      form.className = "";
+  } else {
+      form.className = "filled";
+  }
+}
+
+myFunction2(nameField, username);
+myFunction2(emailField, email);
+
+myFunction(nameField, username);
+myFunction(emailField, email);
+myFunction(newPassField, newPassField);
+myFunction(passConfirmField, passwordConfirmation);
+myFunction(passField, password);
+
+</script>
