@@ -49,25 +49,24 @@
 <%= render "users/shared/links" %>
 
 <script>
-var email = document.querySelector('#email-field');
-var password = document.querySelector('#password-field');
-var emailField  = document.getElementById("email-field");
-var passField  = document.getElementById("password-field");
+    var email = document.querySelector('#email-field');
+    var password = document.querySelector('#password-field');
+    var emailField  = document.getElementById("email-field");
+    var passField  = document.getElementById("password-field");
 
-function myFunction(form, body) {
-    form.focusin = function (){
-        form.className = "active";
-    }; 
-    form.focusout = function (){
-        if (body.value == "") {
-            form.className = "";
-        } else {
-            form.className = "filled"
-        }
-    }; 
-}
+    function myFunction(form, body) {
+        form.focusin = function (){
+            form.className = "active";
+        }; 
+        form.focusout = function (){
+            if (body.value == "") {
+                form.className = "";
+            } else {
+                form.className = "filled"
+            }
+        }; 
+    }
 
-myFunction(emailField, email);
-myFunction(passField, password);
-
+    myFunction(emailField, email);
+    myFunction(passField, password);
 </script>

@@ -1,13 +1,49 @@
-<% @posts.each do |p| %>
-    <%= @array[p.id] %>
-    <%= @array[p.id]["key1"] %>
-    <%= @array[p.id]["key2"] %>
-    <br>
-<% end %>
-<% @array2.each do |a| %>
-    <%= a %>
-    <%= a["key1"] %>
-    <br>
-<% end %>
-<%= @array %><br>
-<%= @array2 %>
+<style>
+@import url(../../common/css/base_photo.css);
+body {
+  background-size: cover;
+  background: url("../common/bg_nature.jpg") center;
+}
+
+.character {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#character2 {
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  background-color: red;
+}
+</style>
+
+<body>
+<!-- 動かしたいキャラクター画像 -->
+<div class="character">
+</div>
+<div id="character2"></div>
+</body>
+<script>
+/** 動かしたいキャラクター */
+const character = document.querySelector('#character2');
+
+// ページ上でマウスボタンを押したら、キャラクターの移動開始
+document.addEventListener('mousedown', () => {
+  // マウスの動きに合わせてキャラクターを動かす
+  document.addEventListener('mousemove', onMouseMove);
+
+  // ページ上でマウスボタンを離したら、キャラクターの移動を終了
+  document.addEventListener('mouseup', () => {
+    document.removeEventListener('mousemove', onMouseMove);
+  });
+});
+
+/**
+ * マウスが動いた時の処理
+ */
+function onMouseMove(event) {
+  character.style.left = `${event.clientX - 100}px`;
+  character.style.top = `${event.clientY - 100}px`;
+}
+</script>

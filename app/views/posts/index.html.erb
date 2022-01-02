@@ -17,8 +17,24 @@
 .index-commentform-field {
     width: 100%;
 }
+#explain-box {
+    position: absolute;
+    top: 100px;
+    left: 0px;
+    border: solid 1px;
+    background: white;
+    font-size: 10px;
+}
+.undisplay {
+    display: none;
+}
 </style>
-
+<script>
+history.replaceState(null, document.getElementsByTagName('title')[0].innerHTML, null);
+window.addEventListener('popstate', function(e) {
+  window.location.reload();
+});
+</script>
 
 <div class="container">
     <div class="row">
@@ -30,69 +46,107 @@
     </div>
     <div class="row">
         <% @posts.each do |post| %>
-            <div class="col-sm-3">
-                <div class="card">
-                    <%= image_tag post.image_url class:"card-img-top"%>
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <%= link_to user_path(post.user_id) do %>
-                                <%= image_tag post.user.image_url, size: "50x50", class:"rounded-circle" if post.user.image? %>
-                                <%= post.user.name %><br>
-                            <% end %>
-                        </h5>
-                        <p class="card-text">
-                        <%= post.body %>
-                        </p>
-                        <div class="icons container">
-                            <div class="row">
-                                <div class="col-3 icon-box">
-                                    <div id="post_likes_buttons_<%= post.id %>">
-                                        <%= render partial: 'post_likes/like', locals: { post: post } %>
-                                    </div>
+            <div class="col-sm-3 card">
+                <%= image_tag post.image_url class:"card-img-top"%>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%= link_to user_path(post.user_id) do %>
+                            <%= image_tag post.user.image_url, size: "50x50", class:"rounded-circle" if post.user.image? %>
+                            <%= post.user.name %><br>
+                        <% end %>
+                    </h5>
+                    <p class="card-text">
+                    <%= post.body %>
+                    </p>
+                    <div class="icons container">
+                        <div class="row">
+                            <div class="col-3 icon-box">
+                                <div id="post_likes_buttons_<%= post.id %>">
+                                    <%= render partial: 'post_likes/like', locals: { post: post } %>
                                 </div>
-                                <div class="col-3 icon-box">
-                                    <%= link_to  post_path(post.id) do %>
-                                        <i class="fas fa-file-alt"></i>
-                                    <% end %>
-                                </div>
-                                <% if user_signed_in? && current_user.id == post.user_id %>
-                                    <div class="col-3 icon-box">
-                                        <%= link_to edit_post_path(post.id) do %>
-                                            <i class="fas fa-pen"></i>
-                                        <% end %>
-                                    </div>
-                                    <div class="col-3 icon-box">
-                                        <%= link_to post_path(post.id), method: :delete, data: { confirm: '削除しますか？' } do %>
-                                            <i class="fas fa-trash-alt"></i>
-                                        <% end %>
-                                    </div>
+                            </div>
+                            <div class="col-3 icon-box">
+                                <%= link_to  post_path(post.id) do %>
+                                    <i class="fas fa-file-alt show-icon"></i>
                                 <% end %>
                             </div>
-                        </div>
-                        <% @comment.post_id = post.id %>
-                        <div class="container">
-                            <%= form_with(model: [post, @comment]) do |f| %>
-                                <div class="row">
-                                    <div class="col-9">
-                                        <div class="index-comment-field">
-                                            <%= f.text_field :body, :placeholder => "コメント", class:"index-commentform-field" %>
-                                        </div>
-                                    </div>
-                                    <div class="undisplay-field">
-                                        <%= f.label :post_id %>
-                                        <%= f.text_field :post_id %>
-                                    </div>
-                                    <div class="col-1">
-                                        <%= button_tag type: :submit, class:"icon" do %>
-                                            <i class="far fa-comment"></i>
-                                        <% end %> 
-                                    </div>
+                            <% if user_signed_in? && current_user.id == post.user_id %>
+                                <div class="col-3 icon-box">
+                                    <%= link_to edit_post_path(post.id) do %>
+                                        <i class="fas fa-pen edit-icon"></i>
+                                    <% end %>
+                                </div>
+                                <div class="col-3 icon-box">
+                                    <%= link_to post_path(post.id), method: :delete, data: { confirm: '削除しますか？' } do %>
+                                        <i class="fas fa-trash-alt delete-icon"></i>
+                                    <% end %>
                                 </div>
                             <% end %>
                         </div>
+                    </div>
+                    <% @comment.post_id = post.id %>
+                    <div class="container">
+                        <%= form_with(model: [post, @comment]) do |f| %>
+                            <div class="row">
+                                <div class="col-9">
+                                    <div class="index-comment-field">
+                                        <%= f.text_field :body, :placeholder => "コメント", class:"index-commentform-field" %>
+                                    </div>
+                                </div>
+                                <div class="undisplay-field">
+                                    <%= f.label :post_id %>
+                                    <%= f.text_field :post_id %>
+                                </div>
+                                <div class="col-1">
+                                    <%= button_tag type: :submit, class:"icon" do %>
+                                        <i class="far fa-comment"></i>
+                                    <% end %> 
+                                </div>
+                            </div>
+                        <% end %>
                     </div>
                 </div>
             </div>
         <% end %>
     </div>
 </div>
+</body>
+
+<script>
+    const showIcons = document.querySelectorAll('.show-icon')
+    const editIcons = document.querySelectorAll('.edit-icon')
+    const deleteIcons = document.querySelectorAll('.delete-icon')
+
+    function myFunc(elements, explain){
+        elements.forEach((value, index) => {
+            value.addEventListener('mouseenter', () => {
+                const divElement = document.createElement('div');
+                divElement.id = 'explain-box';
+                divElement.classList.add('undisplay')
+                divElement.innerHTML = explain;
+                document.body.appendChild(divElement);
+                const explainBox = document.querySelector('#explain-box');
+                document.addEventListener('mousemove', onMouseMove);
+                function onMouseMove(event) {
+                    explainBox.style.left = `${event.clientX + 5}px`;
+                    explainBox.style.top = `${event.clientY - 20}px`;
+                }
+                setTimeout(() => {
+                    divElement.classList.remove('undisplay')
+                }, 1000);
+            });
+            value.addEventListener('mouseleave', () => {
+                setTimeout(() => {
+                    const divElement = document.getElementById('explain-box');
+                    divElement.remove();
+                }, 0);
+            });
+        });
+    };
+
+    myFunc(showIcons, "詳細へ");
+    myFunc(editIcons, "投稿を編集する");
+    myFunc(deleteIcons, "投稿を削除する");
+
+
+</script>

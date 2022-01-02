@@ -28,6 +28,20 @@
     display: flex;
     align-items: center;
 }
+.post-commentform-field {
+    width: 100%;
+}
+#explain-box {
+    position: absolute;
+    top: 100px;
+    left: 0px;
+    border: solid 1px;
+    background: white;
+    font-size: 10px;
+}
+.undisplay {
+    display: none;
+}
 </style>
 <div class="main container">
     <div class="row">
@@ -57,18 +71,18 @@
                     </div>
                     <div class="col-3 icon-box">
                         <%= link_to  post_path(@post.id) do %>
-                            <i class="fas fa-file-alt"></i>
+                            <i class="fas fa-file-alt show-icon"></i>
                         <% end %>
                     </div>
                     <% if user_signed_in? && current_user.id == @post.user_id %>
                         <div class="col-3 icon-box">
                             <%= link_to edit_post_path(@post.id) do %>
-                                <i class="fas fa-pen"></i>
+                                <i class="fas fa-pen edit-icon"></i>
                             <% end %>
                         </div>
                         <div class="col-3 icon-box">
                             <%= link_to post_path(@post.id), method: :delete, data: { confirm: '削除しますか？' } do %>
-                                <i class="fas fa-trash-alt"></i>
+                                <i class="fas fa-trash-alt delete-icon"></i>
                             <% end %>
                         </div>
                     <% end %>
@@ -129,8 +143,39 @@
 <% end %>
 </div>
 
-<style>
-    .post-commentform-field {
-        width: 100%;
-    }
-</style>
+<script>
+    const showIcon = document.querySelector('.show-icon')
+    const editIcon = document.querySelector('.edit-icon')
+    const deleteIcon = document.querySelector('.delete-icon')
+
+    function myFunc(element, explain){
+        element.addEventListener('mouseenter', () => {
+            const divElement = document.createElement('div');
+            divElement.id = 'explain-box';
+            divElement.classList.add('undisplay')
+            divElement.innerHTML = explain;
+            document.body.appendChild(divElement);
+            const explainBox = document.querySelector('#explain-box');
+            document.addEventListener('mousemove', onMouseMove);
+            function onMouseMove(event) {
+                explainBox.style.left = `${event.clientX + 5}px`;
+                explainBox.style.top = `${event.clientY - 20}px`;
+            }
+            setTimeout(() => {
+                divElement.classList.remove('undisplay')
+            }, 1000);
+        });
+        element.addEventListener('mouseleave', () => {
+            setTimeout(() => {
+                const divElement = document.getElementById('explain-box');
+                divElement.remove();
+            }, 0);
+        });
+    };
+
+    myFunc(showIcon, "詳細へ");
+    myFunc(editIcon, "投稿を編集する");
+    myFunc(deleteIcon, "投稿を削除する");
+
+
+</script>
