@@ -41,9 +41,10 @@
     <label>メールアドレス</label>
   </div>
 
-  <div class="field">
+  <div class="file-field">
     <div class="file-label">ユーザーアイコン</div>
-    <%= f.file_field :image, class:"file-field" %>
+    <%= f.file_field :image, id:"myFile" %>
+    <div class="log"><img class="rounded-circle"></div>
   </div>
 
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -76,6 +77,21 @@
 <%= button_to "アカウントを削除する", registration_path(resource_name), data: { confirm: "本当に削除しますか?" }, method: :delete, class:"btn btn-primary" %>
 
 <%= link_to "Back", :back, class:"btn btn-primary" %>
+
+<style>
+.log {
+  width: 200px;
+  height: 200px;
+  border-radius: 5px;
+  margin: 20px auto;
+  background: rgba(0,0,0,0.5);
+  box-sizing: border-box;
+}
+.log img {
+  width: 200px;
+  height: 200px;
+}
+</style>
 
 <script>
 var username = document.querySelector('#name-field');
@@ -118,5 +134,28 @@ myFunction(emailField, email);
 myFunction(newPassField, newPassField);
 myFunction(passConfirmField, passwordConfirmation);
 myFunction(passField, password);
+
+const element = document.querySelector('#myFile');
+const imgEl = document.querySelector('.log img');
+
+// ファイル選択ダイアログが選択されたら
+element.addEventListener('input', (event) => {
+  const target = event.target;
+  // 選択されたファイルを参照
+  const files = target.files;
+  // 配列になってるので、0番目のファイルを参照
+  const file = files[0];
+
+  // FileReaderのインスタンスを作成
+  const reader = new FileReader();
+  // 読み込み終わったら
+  reader.addEventListener('load', () => {
+    // 画像を表示
+    imgEl.src = reader.result;
+  });
+  // テキストファイルとして読み込む
+  reader.readAsDataURL(file);
+});
+
 
 </script>
